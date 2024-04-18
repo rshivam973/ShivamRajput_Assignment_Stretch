@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Navbar from '../components/Navbar'
 // import { usersData } from '../utils/dummyData'
 import Profilecard from '../components/Profilecard'
-const BACKEND_URL = REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
   const [students, setStudents] = useState([]);
