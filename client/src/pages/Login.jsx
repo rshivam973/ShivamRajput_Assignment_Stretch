@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = REACT_APP_BACKEND_URL;
 
 const Login = () => {
 
