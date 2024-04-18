@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom'
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const EditProfile = () => {
     const navigate = useNavigate();
@@ -60,7 +61,7 @@ const EditProfile = () => {
         }
       });
     
-    const response = await fetch('http://localhost:5000/update', {
+    const response = await fetch(`${BACKEND_URL}/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData })
@@ -79,7 +80,7 @@ const EditProfile = () => {
     const userData = await localStorage.getItem('user');
     const user = await  JSON.parse(userData);
     const email = user.email;
-    const res = await fetch(`http://localhost:5000/deleteuser?email=${email}`,{
+    const res = await fetch(`${BACKEND_URL}/deleteuser?email=${email}`,{
         method:'DELETE',
         headers:{
             "Content-Type":"application/json"
@@ -107,7 +108,7 @@ const EditProfile = () => {
         let email = user.email;
         console.log("email: ", email);
         try {
-            const  res = await fetch(`http://localhost:5000/getcurrentuser?email=${email}`, {
+            const  res = await fetch(`${BACKEND_URL}/getcurrentuser?email=${email}`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json'

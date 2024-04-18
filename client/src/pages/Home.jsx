@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Navbar from '../components/Navbar'
 // import { usersData } from '../utils/dummyData'
 import Profilecard from '../components/Profilecard'
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Home = () => {
   const [students, setStudents] = useState([]);
@@ -26,12 +27,13 @@ const Home = () => {
   }
 
   useEffect(()=>{
+    console.log("backend url: ", BACKEND_URL);
 
     const fetchStudents = async()=>{
-      const data = await fetch("http://localhost:5000/allstudents");
+      const data = await fetch(`${BACKEND_URL}/allstudents`);
       const res = await data.json();
       
-      console.log(res);
+      // console.log(res);
       setStudents(res);
     }
 

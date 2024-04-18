@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const Login = () => {
 
@@ -16,7 +17,7 @@ const navigate = useNavigate();
 const handleSubmit = async(e) => { 
   e.preventDefault();
   try {
-    const response = await fetch("http://localhost:5000/login", {
+    const response = await fetch(`${BACKEND_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
