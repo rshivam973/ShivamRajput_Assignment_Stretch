@@ -10,12 +10,14 @@ const Login = () => {
 
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
+const [loader, setLoader] = useState(false);
 const dispatch = useDispatch();
 const {loading, error} = useSelector((state) => state.user);
 const navigate = useNavigate();
 
 const handleSubmit = async(e) => { 
   e.preventDefault();
+  setLoader(true);
   try {
     const response = await fetch(`${BACKEND_URL}/login`, {
       method: "POST",
@@ -29,6 +31,7 @@ const handleSubmit = async(e) => {
     if (response.status!==200) {
       dispatch(signInFailure(data));
       toast.error(data.message);
+      setLoader(false);
       return;
     }
     dispatch(signInSuccess(data.user));
@@ -37,6 +40,7 @@ const handleSubmit = async(e) => {
     dispatch(signInFailure());
     toast.error(err.message);
     console.error("error: "+err);
+    setLoader(false);
   }
 }
 
@@ -84,7 +88,7 @@ const handleSubmit = async(e) => {
               onClick={handleSubmit}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Login
+              {loader ? 'Loading...' : 'Login'}
             </button>
           </div>
         </div>

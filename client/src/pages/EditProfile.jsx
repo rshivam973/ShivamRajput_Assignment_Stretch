@@ -22,6 +22,9 @@ const EditProfile = () => {
   const [bio, setBio] = useState('');
   const [profilePic, setProfilePic] = useState('');
 
+  const [loadingDelete, setLoadingDelete] = useState(false); // Added loading state for delete action
+  const [loadingSave, setLoadingSave] = useState(false);
+
   const handleTechStackChange = (e) => {
     const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
     setTechStack(selectedOptions);
@@ -60,7 +63,7 @@ const EditProfile = () => {
           delete formData[key];
         }
       });
-    
+    setLoadingSave(true);
     const response = await fetch(`${BACKEND_URL}/update`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -68,9 +71,11 @@ const EditProfile = () => {
     });
     if (!response.ok){
         toast.error(await response.text());
+        setLoadingSave(false);
         return;
     }
     const  data = await response.json();
+    setLoadingSave(false)
     navigate('/');
     toast.success(data.message);
     localStorage.setItem('user', JSON.stringify(formData));
@@ -80,6 +85,7 @@ const EditProfile = () => {
     const userData = await localStorage.getItem('user');
     const user = await  JSON.parse(userData);
     const email = user.email;
+    setLoadingDelete(true);
     const res = await fetch(`${BACKEND_URL}/deleteuser?email=${email}`,{
         method:'DELETE',
         headers:{
@@ -89,9 +95,11 @@ const EditProfile = () => {
     const result= await res.json();
     if(res.status !==200){
         toast.error(result);
+        setLoadingDelete(false);
         return;
     }
     localStorage.clear();
+    setLoadingDelete(false);
     navigate('/');
     toast.success("The user has been deleted");
   };
@@ -231,11 +239,11 @@ const EditProfile = () => {
           </div>
           {/* Save Changes button */}
           <div className="mt-8 flex flex-row justify-end gap-3">
-            <button type="button" onClick={handleSubmit} className="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Save Changes
+            <button type="button" onClick={handleSubmit} disabled={loadingSave} className="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {loadingSave ? 'Saving...' : 'Save Changes'}
             </button>
-            <button type="button" onClick={handleDelete} className="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              Delete Profile
+            <button type="button" onClick={handleDelete} disabled={loadingDelete} className="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {loadingDelete ? 'Deleting...' : 'Delete Profile'}
             </button>
           </div>
         </div>
