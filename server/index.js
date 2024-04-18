@@ -8,10 +8,10 @@ const cors = require('cors');
 connectDB();
 app.use(express.json());
 app.use(cors({
-    origin: {
+    origin: [
         'http://localhost:3000',
         'https://shivam-rajput-assignment-stretch.vercel.app/'
-    } // Replace with your frontend URL
+    ]// Replace with your frontend URL
 }));
 
 app.get('/check',(req,res)=>{
